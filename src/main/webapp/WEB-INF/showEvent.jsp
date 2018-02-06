@@ -22,6 +22,7 @@
 			<input type="submit" value="Back">
 		</form>
 		<div>
+				<img src="/images/${event.getPicture()}" width="200" height="200"/>
 				<h1>${event.name}</h1>
 				
 				<h3>Date: ${event.date}</h3>

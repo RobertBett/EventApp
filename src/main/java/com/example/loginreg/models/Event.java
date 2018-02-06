@@ -32,6 +32,8 @@ public class Event {
 	@Size(min=1, max=255)
 	private String city;
 	
+	private String picture;
+	
 	@Size(min=1, max=255)
 	private String state;
 	
@@ -115,6 +117,12 @@ public class Event {
 	}
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
+	}
+	public String getPicture() {
+		return picture;
+	}
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 	public Event(){
 		this.createdAt = new Date();

@@ -1,5 +1,8 @@
 package com.example.loginreg.controllers;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.loginreg.models.Event;
 import com.example.loginreg.models.Message;
@@ -91,10 +96,33 @@ public class EventController {
 	}
 	
 	@PostMapping("/new")
-	public String create(@Valid @ModelAttribute("event") Event event, BindingResult res) {
-		if(res.hasErrors()) {return "redirect:/";}
-			eventService.create(event);
-			return "redirect:/events";
+	public String create(@Valid @ModelAttribute("event") Event event, BindingResult res,@RequestParam("file") MultipartFile file) {
+		System.out.println("hellodscscdfcfd##");
+		if(res.hasErrors()|| file.isEmpty()) {
+			System.out.println("hellodscs");
+			return "redirect:/events";}
+		else {
+			try {	byte[] bytes = file.getBytes();
+				
+				// Creating the directory to store file
+				File dir = new File("src/main/resources/static/images");
+				if (!dir.exists())
+					dir.mkdirs();
+				// Create the file on server
+				File serverFile = new File(dir.getAbsolutePath()
+						+ File.separator + file.getOriginalFilename());
+				BufferedOutputStream stream = new BufferedOutputStream(
+						new FileOutputStream(serverFile));
+				stream.write(bytes);
+				stream.close();
+				event.setPicture(file.getOriginalFilename());
+				eventService.create(event);
+			} catch (Exception e) {
+				return "redirect:/events";
+		}return "redirect:/events";
+	}
+
+
 		
 	}
 	

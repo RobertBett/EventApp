@@ -23,6 +23,7 @@
 		<div>
 			<table>
 			<tr>
+				<th>Images</th>
 				<th>Name</th>
 				<th>Date</th>
 				<th>Location</th>
@@ -32,16 +33,17 @@
 			</tr>
 			<c:forEach items="${userStates}" var="event">
 				<tr>
+				<td><img src="/images/${event.getPicture()}" width="50" height="50"/></td>
 				<td><a href="/events/${event.id}">${event.name}</a></td>
 				<td>${event.date}</td>
 				<td>${event.city}, ${event.state}</td>
 				<c:choose>
 
 						<c:when test="${event.isJoined() == true}">
-							<td>Im Going</td>
+							<td>You're Going</td>
 						</c:when>
 						<c:otherwise>
-							<td>Im Not Going</td>
+							<td>You're Not Going</td>
 
 						</c:otherwise>
 				</c:choose>	
@@ -81,6 +83,7 @@
 				<div>
 			<table>
 			<tr>
+				<th>Images</th>
 				<th>Name</th>
 				<th>Date</th>
 				<th>Location</th>
@@ -90,15 +93,16 @@
 
 			<c:forEach items="${joinedEvents}" var="join">
 				<tr>
+				<td><img src="/images/${join.getPicture()}" width="50" height="50"/></td>
 				<td><a href="/events/${join.id}">${join.name}</a></td>
 				<td>${join.date}</td>
 				<td>${join.city}, ${join.state}</td>
 				<c:choose>
 					<c:when test="${event.isJoined() == true}">
-						<td>Im Not Going</td>
+						<td>You're Not Going</td>
 					</c:when>
 					<c:otherwise>
-						<td>Im Going</td>
+						<td>You're Going</td>
 					</c:otherwise>
 				</c:choose>
 				<td><form action="/events/${join.id}/unjoin" method="post"><input type="submit" value="Im Not Going"></form></td>
@@ -107,7 +111,9 @@
 		</table>
 		</div>
 		
-		<form:form method="post" action="/events/new" modelAttribute="event">
+		<form:form method="post" action="/events/new" enctype="multipart/form-data" modelAttribute="event">
+				<label for="file">Only image:(Optional)</label>
+				<input type="file" name="file">
 				<form:label path="name"> Name:
 					<form:input path="name"></form:input>
 					<form:errors path="name"></form:errors>
